@@ -31,4 +31,48 @@ const wv = new WebView();
 await wv.loadHTML(response2);
 // // Now get content of div class sp_statBody
 const content = await wv.evaluateJavaScript(`document.querySelector('.sp_statBody').innerHTML`)
+
+// Now parse content
+let amount = content.match(/Depotwert: <b>(.*?)<\/b>/)[1]
 console.log(content)
+
+let widget = createWidget(amount, "€")
+if (config.runsInWidget) {
+    // create and show widget
+    Script.setWidget(widget)
+    Script.complete()
+} else {
+    widget.presentSmall()
+}
+
+// Assemble widget layout 
+function createWidget(amount, currency) {
+    let w = new ListWidget()
+    w.backgroundColor = new Color("#1A1A1A")
+
+    w.addSpacer(8)
+
+    let staticText = w.addText("Golddepot")
+    staticText.textColor = Color.white()
+    staticText.font = Font.boldSystemFont(12)
+    staticText.centerAlignText()
+
+    w.addSpacer(8)
+
+    let amountTxt = w.addText(amount + ' ' + currency)
+    amountTxt.textColor = Color.orange()
+    amountTxt.font = Font.systemFont(16)
+    amountTxt.centerAlignText()
+
+    w.addSpacer(8)
+
+    // Show current date in format Day. Month Year
+    let currentDate = new Date();
+    let lastDate = w.addDate(currentDate);
+    lastDate.textColor = Color.gray()
+    lastDate.font = Font.mediumSystemFont(10)
+    lastDate.centerAlignText();
+
+    w.setPadding(0, 0, 0, 0)
+    return w
+}
