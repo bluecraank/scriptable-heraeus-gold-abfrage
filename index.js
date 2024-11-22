@@ -1,3 +1,11 @@
+// This is a scriptable app that will be run by the Scriptable app on your iOS device.
+
+let loginUrl = "https://www.heraeus-gold.de/de/login"
+let baseUrl = "https://www.heraeus-gold.de/de/mein_golddepot/meinsparplan/step1"
+let username = "yourUsername"
+let password = "yourPassword"
+
+
 let request = new Request(loginUrl)
 request.method = "POST"
 request.addParameterToMultipart("username", username)
