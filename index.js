@@ -33,10 +33,12 @@ await wv.loadHTML(response2);
 const content = await wv.evaluateJavaScript(`document.querySelector('.sp_statBody').innerHTML`)
 
 // Now parse content
-let amount = content.match(/Depotwert: <b>(.*?)<\/b>/)[1]
+let menge = content.match(/<strong>Menge:<\/strong> (.*?)<br>/)[1]
+let anteile = content.match(/<strong>Anteile:<\/strong> (.*?)<br>/)[1]
+let wert = content.match(/Depotwert: <b>(.*?)<\/b>/)[1]
 console.log(content)
 
-let widget = createWidget(amount, "€")
+let widget = createWidget(wert, anteile, menge)
 if (config.runsInWidget) {
     // create and show widget
     Script.setWidget(widget)
@@ -46,20 +48,32 @@ if (config.runsInWidget) {
 }
 
 // Assemble widget layout 
-function createWidget(amount, currency) {
+function createWidget(amount) {
     let w = new ListWidget()
     w.backgroundColor = new Color("#1A1A1A")
 
-    w.addSpacer(8)
-
-    let staticText = w.addText("Golddepot")
+    let staticText = w.addText("Mein Gold:")
     staticText.textColor = Color.white()
     staticText.font = Font.boldSystemFont(12)
     staticText.centerAlignText()
 
     w.addSpacer(8)
 
-    let amountTxt = w.addText(amount + ' ' + currency)
+    let anteileTxt = w.addText(anteile)
+    anteileTxt.textColor = Color.orange()
+    anteileTxt.font = Font.systemFont(16)
+    anteileTxt.centerAlignText()
+
+    w.addSpacer(8)
+
+    let mengeTxt = w.addText(menge)
+    mengeTxt.textColor = Color.orange()
+    mengeTxt.font = Font.systemFont(16)
+    mengeTxt.centerAlignText()
+
+    w.addSpacer(8)
+
+    let amountTxt = w.addText(wert)
     amountTxt.textColor = Color.orange()
     amountTxt.font = Font.systemFont(16)
     amountTxt.centerAlignText()
