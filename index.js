@@ -33,7 +33,7 @@ await wv.loadHTML(response2);
 const content = await wv.evaluateJavaScript(`document.querySelector('.sp_statBody').innerHTML`)
 
 // Now parse content
-let menge = content.match(/<strong>Menge:<\/strong> (.*?)<br>/)[1]
+let menge = content.match(/<strong>Stück:<\/strong> (.*?)<br>/)[1]
 let anteile = content.match(/<strong>Anteile:<\/strong> (.*?)<br>/)[1]
 let wert = content.match(/Depotwert: <b>(.*?)<\/b>/)[1]
 console.log(content)
@@ -64,21 +64,21 @@ function createWidget(amount) {
     anteileTxt.font = Font.systemFont(16)
     anteileTxt.centerAlignText()
 
-    w.addSpacer(8)
+    w.addSpacer(4)
 
-    let mengeTxt = w.addText(menge)
+    let mengeTxt = w.addText("Stück:" + menge)
     mengeTxt.textColor = Color.orange()
-    mengeTxt.font = Font.systemFont(16)
+    mengeTxt.font = Font.systemFont(8)
     mengeTxt.centerAlignText()
 
-    w.addSpacer(8)
+    w.addSpacer(12)
 
     let amountTxt = w.addText(wert)
     amountTxt.textColor = Color.orange()
     amountTxt.font = Font.systemFont(16)
     amountTxt.centerAlignText()
 
-    w.addSpacer(8)
+    w.addSpacer(12)
 
     // Show current date in format Day. Month Year
     let currentDate = new Date();
