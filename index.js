@@ -9,12 +9,14 @@ let password = "yourPassword"
 let request = new Request(loginUrl)
 request.method = "POST"
 request.addParameterToMultipart("username", username)
-request.addParameterToMultipart("password", password)
+request.addParameterToMultipart("passwort", password)
 let response = await request.loadString()
-console.log(response)
-    // Get PHPSESSID cookie
-let cookie = request.response.cookies.PHPSESSID
-console.log(cookie)
+
+// cookies is an object
+let cookie = request.response.cookies[0].value
+
+// get first cookie
+
 
 // Now request baseUrl
 let request2 = new Request(baseUrl)
@@ -24,13 +26,19 @@ request2.headers = {
 }
 
 let response2 = await request2.loadString()
-console.log(response2)
+
+const wv = new WebView();
+await wv.loadHTML(response2);
+const body = await wv.evaluateJavaScript(`document.body.innerHTML`);
+console.log(body)
+
+// console.log(response2)
 
 
-// Now get content of div class sp_statBody
-let regex = /<div class="sp_statBody">(.*)<\/div>/
-let match = response2.match(regex)
+// // Now get content of div class sp_statBody
+// let regex = /<div class="sp_statBody">(.*)<\/div>/
+// let match = response2.match(regex)
 
-if (match) {
-    console.log(match[1])
-}
+// if (match) {
+//     console.log(match[1])
+// }
